@@ -4,3 +4,11 @@ node_modules
 npm-debug.log
 .DS_Store
 .env
+# Expo
+*.expo*
+# Logs
+logs
+*.log
+# Build
+ios
+android
