@@ -7,7 +7,15 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "jest"
+    "test": "jest",
+    "start:clean": "expo start -c",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "doctor": "expo-doctor",
+    "fix:all": "npm run lint:fix && npm run format:fix && npm run typecheck"
   },
   "dependencies": {
     "expo": "~50.0.0",
@@ -43,7 +51,16 @@
     "ts-jest": "29.1.1",
     "@types/jest": "29.5.5",
     "babel-jest": "29.7.0",
-    "react-test-renderer": "18.2.0"
+    "react-test-renderer": "18.2.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "@react-native-community/eslint-config": "^3.2.0",
+    "eslint-config-prettier": "^9.1.0",
+    "depcheck": "^1.4.3"
   },
   "jest": {
     "preset": "react-native",
