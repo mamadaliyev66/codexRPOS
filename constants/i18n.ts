@@ -1,0 +1,27 @@
+export const uz = {
+  loginTitle: 'Tizimga kirish',
+  email: 'Email',
+  password: 'Parol',
+  signIn: 'Kirish',
+  registerTitle: 'Ro\'yxatdan o\'tish',
+  signOut: 'Chiqish',
+  orders: 'Buyurtmalar',
+  tables: 'Stollar',
+  menu: 'Menyu',
+  reports: 'Hisobotlar',
+  newOrder: 'Yangi buyurtma',
+  sendToKitchen: 'Oshxonaga yuborish',
+  payNow: 'Hozir to\'lash',
+  payLater: 'Keyinroq to\'lash',
+  cash: 'Naqd',
+  card: 'Karta',
+  saved: 'Saqlangan',
+  deleted: 'O\'chirildi',
+  updated: 'Yangilandi',
+  users: 'Foydalanuvchilar',
+  settings: 'Sozlamalar',
+  offlineQueue: 'Navbat',
+  login: 'Kirish',
+  register: 'Ro\'yxatdan o\'tish'
+};
+export type I18nKeys = keyof typeof uz;
