@@ -1,15 +1,18 @@
-import { Stack } from 'expo-router';
-import { Provider } from 'react-redux';
-import { store } from '../redux/store';
-import { PaperProvider } from 'react-native-paper';
+import 'react-native-gesture-handler';
 import React from 'react';
+import { Stack } from 'expo-router';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import ErrorBoundary from '../components/ui/ErrorBoundary';
 
 export default function RootLayout() {
   return (
-    <Provider store={store}>
+    <SafeAreaProvider>
       <PaperProvider>
-        <Stack screenOptions={{ headerShown: false }} />
+        <ErrorBoundary>
+          <Stack screenOptions={{ headerShown: false }} />
+        </ErrorBoundary>
       </PaperProvider>
-    </Provider>
+    </SafeAreaProvider>
   );
 }

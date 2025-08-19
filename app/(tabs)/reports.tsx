@@ -1,20 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Screen } from '../../components/ui/Screen';
-import { Text } from 'react-native-paper';
-import { uz } from '../../constants/i18n';
-import { AppBar } from '../../components/ui/AppBar';
-import { getSalesTotals } from '../../services/reports';
-
+import React from 'react';
+import { View, Text } from 'react-native';
+import { UZ } from '../../constants/i18n';
 export default function Reports() {
-  const [sales, setSales] = useState(0);
-  useEffect(() => {
-    getSalesTotals().then(r => setSales(r.sales));
-  }, []);
-
   return (
-    <Screen>
-      <AppBar title={uz.reports} />
-      <Text>{sales} so'm</Text>
-    </Screen>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 24,
+      }}
+    >
+      <Text style={{ fontSize: 18 }}>{UZ.reports}</Text>
+    </View>
   );
 }
