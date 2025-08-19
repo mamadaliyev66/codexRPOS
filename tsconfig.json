@@ -8,6 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "baseUrl": ".",
+    "types": ["nativewind/types", "jest", "node"],
     "paths": {
       "@/*": ["./*"]
     }
