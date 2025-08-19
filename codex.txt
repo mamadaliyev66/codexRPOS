@@ -1,0 +1,311 @@
+Task: Create a complete Expo React Native (TypeScript) app in this repo for a restaurant POS system (rPOS).
+
+1. Project Setup
+
+Initialize Expo with TypeScript.
+
+Install & configure:
+
+expo-router
+
+@reduxjs/toolkit react-redux redux-persist @react-native-async-storage/async-storage
+
+nativewind (Tailwind RN)
+
+react-native-paper
+
+@expo/vector-icons
+
+react-hook-form zod @hookform/resolvers/zod
+
+expo-netinfo
+
+dayjs
+
+firebase
+
+expo-barcode-scanner
+
+expo-print
+
+jest @testing-library/react-native @testing-library/jest-native
+
+Configure Tailwind (nativewind.config.js) and redux-persist (AsyncStorage).
+
+2. Firebase Config
+
+Create /firebase/client.ts with this config:
+
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA9SFD0p1Zgf8hwnqtYlxdmPfpLd7tx-ew",
+  authDomain: "rpos-d53d0.firebaseapp.com",
+  databaseURL: "https://rpos-d53d0-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "rpos-d53d0",
+  storageBucket: "rpos-d53d0.firebasestorage.app",
+  messagingSenderId: "158319305194",
+  appId: "1:158319305194:web:1113ad49178f365ce2d293",
+  measurementId: "G-P9LW699SEC"
+};
+
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+
+
+Add .env:
+
+EXPO_PUBLIC_TENANT_ID=default
+
+3. File Structure
+/app
+  /(auth)/login.tsx
+  /(auth)/register.tsx
+  /(tabs)/index.tsx
+  /(tabs)/orders.tsx
+  /(tabs)/tables.tsx
+  /(tabs)/menu.tsx
+  /(tabs)/reports.tsx
+  /admin/users.tsx
+  /admin/settings.tsx
+  /cashier/index.tsx
+  /waiter/index.tsx
+  /kitchen/index.tsx
+  /offline/queue.tsx
+/components
+  /ui
+    Screen.tsx
+    AppBar.tsx
+    Button.tsx
+    TextField.tsx
+    Select.tsx
+    Badge.tsx
+    Card.tsx
+    EmptyState.tsx
+    Toast.tsx
+  /order/OrderCard.tsx
+  /table/TableCard.tsx
+  /menu/MenuCard.tsx
+/constants/i18n.ts
+/constants/theme.ts
+/constants/roles.ts
+/firebase/client.ts
+/hooks/useAuth.ts
+/hooks/useNetStatus.ts
+/hooks/useSyncQueue.ts
+/lib/pricing.ts
+/lib/format.ts
+/redux/store.ts
+/redux/slices/authSlice.ts
+/redux/slices/menuSlice.ts
+/redux/slices/tablesSlice.ts
+/redux/slices/ordersSlice.ts
+/redux/slices/cartSlice.ts
+/redux/slices/usersSlice.ts
+/redux/slices/syncSlice.ts
+/services/auth.ts
+/services/menu.ts
+/services/orders.ts
+/services/tables.ts
+/services/users.ts
+/services/reports.ts
+/services/sync.ts
+/types/index.ts
+/firebase/rules.firestore.txt
+/fixtures/seed.ts
+
+4. UI Design
+
+Use Uzbek for all labels, buttons, messages.
+
+Design: clean, card-based, rounded corners, subtle shadows.
+
+Colors:
+
+Primary #0E7CFF, Accent #00C2A8, Success #10B981, Warning #F59E0B, Danger #EF4444, Background Light #F6F8FB, Background Dark #0A0F1A.
+
+Typography: Inter or Manrope via Expo Fonts.
+
+Bottom tab navigation with icons:
+
+Orders, Tables, Menu, Reports.
+
+FAB button: “Yangi buyurtma”.
+
+Status badges:
+
+Yangi = Blue, Oshxonada = Yellow, Tayyor = Green, Yopilgan = Gray.
+
+Responsive design (tablet & phone).
+
+Dark mode support.
+
+5. Language (Uzbek Strings)
+
+Create /constants/i18n.ts with all UI strings (login, register, menu, orders, tables, payments, reports, errors, toasts).
+Example keys: loginTitle, signIn, signOut, newOrder, sendToKitchen, payNow, payLater, cash, card, saved, deleted, updated, etc.
+
+All UI must reference UZ constants.
+
+6. Roles & Routing
+
+After login, check user’s role (admin, cashier, waiter, kitchen).
+
+Role → route:
+
+Admin → Tabs (Orders, Tables, Menu, Reports) + Admin screens.
+
+Cashier → /cashier/index.tsx.
+
+Waiter → /waiter/index.tsx.
+
+Kitchen → /kitchen/index.tsx.
+
+7. Firestore Schema
+/tenants/{tenantId}/
+  users/{uid}
+  menuCategories/{id}
+  menuItems/{id}
+  tables/{id}
+  orders/{id}
+  settings/app
+
+8. Data Models (/types/index.ts)
+
+Define types: AppUser, MenuCategory, MenuItem, Table, Order, OrderItem, Payment, SyncTask.
+Statuses in Uzbek: "bo'sh", "band", "tayyorlanmoqda", "tozalanmoqda", "yangi", "oshxonada", "tayyor", "yopilgan".
+
+9. Redux Slices
+
+authSlice: login, logout, bootstrap.
+
+menuSlice: fetch, add, edit menu.
+
+tablesSlice: fetch, update status.
+
+ordersSlice: fetch by status, create order, update order, add payment, close order.
+
+cartSlice: local order building.
+
+usersSlice: CRUD for users (admin only).
+
+syncSlice: offline queue + online flag.
+
+If offline, enqueue sync task and update local state.
+When online, useSyncQueue drains queue.
+
+10. Core Screens
+
+Orders
+
+Tabbed list by status.
+
+Create order modal: add items, totals, send to kitchen, pay now/later.
+
+Tables
+
+Grid of tables with colored status badges.
+
+Tap to create or open order.
+
+Menu
+
+Category filter, item cards (image, name, price).
+
+Admin can add/edit items.
+
+Reports
+
+Filters: today, week, month.
+
+Show totals: sales, orders, avg ticket, top items.
+
+Simple charts optional.
+
+Cashier
+
+Quick add items, payment flow, receipt print.
+
+Waiter
+
+Table-first order flow, send to kitchen.
+
+Kitchen
+
+Real-time order tickets, mark “tayyor”.
+
+Admin
+
+User management: assign role, active toggle.
+
+Settings: tax, service %, currency.
+
+11. Services
+
+Implement in /services/*.ts:
+
+Auth, Menu, Orders, Tables, Users, Reports, Sync.
+
+All calls use Firestore modular API.
+
+Respect offline-first design.
+
+12. Pricing Helper
+
+/lib/pricing.ts with calcTotals() for subtotal, service, tax, grand total.
+
+13. Offline Queue
+
+syncSlice keeps tasks.
+
+When offline, enqueue tasks.
+
+When network restored, replay tasks to Firestore.
+
+14. Firestore Rules
+
+Add /firebase/rules.firestore.txt with role-based permissions (admin full, cashier orders/payments, waiter orders, kitchen order status).
+
+15. Seed Script
+
+/fixtures/seed.ts to create:
+
+Admin user (admin@rpos.uz / Admin123!).
+
+5 menu items (Uzbek).
+
+5 tables.
+
+16. Testing
+
+Add Jest + React Native Testing Library.
+
+Test reducers, pricing.ts, and orders screen rendering.
+
+17. Acceptance Criteria
+
+Firebase Auth works, role-based routing enforced.
+
+Menu CRUD, Table CRUD, User CRUD (admin).
+
+Orders flow works across waiter → kitchen → cashier.
+
+Payments (cash, card, later) update correctly.
+
+Offline orders sync when back online.
+
+Reports show correct totals.
+
+All UI strings are Uzbek.
+
+Design matches “Aurora” style (cards, rounded, clean).
+
+Tests pass.
+
+Now build this app from scratch in this repo. Commit code in feature-based commits.
