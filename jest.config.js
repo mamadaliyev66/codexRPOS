@@ -5,6 +5,6 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/'],
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
   transformIgnorePatterns: [
-    'node_modules/(?!(jest-)?react-native|@react-native|expo(nent)?|expo-router|@expo/.*|react-navigation|@react-navigation/.*|@react-native-community/.*)',
+    'node_modules/(?!(jest-)?react-native|@react-native|expo(nent)?|expo-router|@expo/.*|react-navigation|@react-navigation/.*|@react-native-community/.*|firebase|@firebase)',
   ],
 };

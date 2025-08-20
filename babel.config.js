@@ -4,6 +4,6 @@ module.exports = function (api) {
   const isTest = process.env.JEST_WORKER_ID !== undefined || process.env.NODE_ENV === 'test';
   return {
     presets: ['babel-preset-expo'],
-    plugins: isTest ? [] : ['nativewind/babel'],
+    plugins: isTest ? [] : [],
   };
 };

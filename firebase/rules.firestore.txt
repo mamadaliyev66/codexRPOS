@@ -2,8 +2,63 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function member(tid) {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/tenants/$(tid)/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/tenants/$(tid)/users/$(request.auth.uid)).data.active == true;
+    }
+    function role(tid) {
+      return get(/databases/$(database)/documents/tenants/$(tid)/users/$(request.auth.uid)).data.role;
+    }
+    function hasRole(tid, roles) {
+      return member(tid) && role(tid) in roles;
+    }
+    function tenantGuard(tid) {
+      return !('tenantId' in request.resource.data) || request.resource.data.tenantId == tid;
+    }
+
+    match /tenants/{tenantId}/settings/{doc} {
+      allow read: if member(tenantId);
+      allow write: if hasRole(tenantId, ['admin']) && tenantGuard(tenantId);
+    }
+
+    match /tenants/{tenantId}/users/{uid} {
+      allow read: if hasRole(tenantId, ['admin']);
+      allow write, delete: if hasRole(tenantId, ['admin']) && tenantGuard(tenantId);
+    }
+
+    match /tenants/{tenantId}/tables/{id} {
+      allow read: if member(tenantId);
+      allow write: if hasRole(tenantId, ['admin']) && tenantGuard(tenantId);
+      allow delete: if hasRole(tenantId, ['admin']);
+    }
+
+    match /tenants/{tenantId}/menuCategories/{id} {
+      allow read: if member(tenantId);
+      allow write: if hasRole(tenantId, ['admin']) && tenantGuard(tenantId);
+      allow delete: if hasRole(tenantId, ['admin']);
+    }
+
+    match /tenants/{tenantId}/menuItems/{id} {
+      allow read: if member(tenantId);
+      allow write: if hasRole(tenantId, ['admin']) && tenantGuard(tenantId);
+      allow delete: if hasRole(tenantId, ['admin']);
+    }
+
+    match /tenants/{tenantId}/orders/{orderId} {
+      allow read: if member(tenantId);
+      allow create: if hasRole(tenantId, ['admin','waiter']) && tenantGuard(tenantId);
+      allow update: if tenantGuard(tenantId) && (
+          hasRole(tenantId, ['admin']) ||
+          (hasRole(tenantId, ['waiter']) && request.resource.data.status == 'oshxonada' && resource.data.status == 'yangi') ||
+          (hasRole(tenantId, ['kitchen']) && request.resource.data.status == 'tayyor' && resource.data.status == 'oshxonada') ||
+          (hasRole(tenantId, ['cashier']) && request.resource.data.status == 'yopilgan' && resource.data.status == 'tayyor')
+        );
+      allow delete: if hasRole(tenantId, ['admin']);
+    }
+
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }
