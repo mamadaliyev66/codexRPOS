@@ -1,3 +1,12 @@
+jest.mock('../services/orders', () => ({
+  listOrdersByStatus: jest.fn(),
+  createOrder: jest.fn(),
+  addItem: jest.fn(),
+  updateOrderStatus: jest.fn(),
+  addPayment: jest.fn(),
+  closeOrder: jest.fn(),
+}));
+
 import ordersReducer, { upsertLocal } from '../redux/slices/ordersSlice';
 import type { Order } from '../types';
 
