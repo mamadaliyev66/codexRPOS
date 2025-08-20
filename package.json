@@ -1,0 +1,31 @@
+{
+  "scripts": {
+    "start": "expo start",
+    "start:clean": "expo start -c",
+    "web": "expo start --web",
+    "web:clean": "expo start --web -c",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "doctor": "expo-doctor",
+    "fix:all": "npm run lint:fix && npm run format:fix && npm run typecheck",
+    "seed:admin": "node fixtures/seed-admin.cjs",
+    "test": "jest"
+  },
+  "main": "expo-router/entry",
+  "dependencies": {
+    "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
+    "@react-native-community/netinfo": "11.1.0",
+    "@reduxjs/toolkit": "^2.8.2",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.3.1",
+    "firebase-admin": "^13.4.0",
+    "jest-expo": "^53.0.9",
+    "react-redux": "^9.2.0",
+    "react-test-renderer": "^19.1.1"
+  }
+}
